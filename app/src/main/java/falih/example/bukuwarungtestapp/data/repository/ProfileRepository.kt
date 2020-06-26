@@ -12,6 +12,7 @@ import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import java.lang.Exception
 
 class ProfileRepository(
     context: Context,
@@ -29,18 +30,25 @@ class ProfileRepository(
 
     suspend fun fetchUsersFromAPI(page: Int): Int {
         println("calling API...")
-        val response: Response<UserListResponse> = apiServices.getUserList(page)
-        return if (response.isSuccessful){
-            println("API successfully called")
-            insertAll(response.body()?.data)
-            if (response.body()?.data?.isNotEmpty() == true)
-                page + 1
-            else page
-        } else {
-            withContext(Main){
-                userFetchErrorSLE.call()
+        try {
+            val response: Response<UserListResponse> = apiServices.getUserList(page)
+            return if (response.isSuccessful){
+                println("API successfully called")
+                insertAll(response.body()?.data)
+                if (response.body()?.data?.isNotEmpty() == true)
+                    page + 1
+                else page
+            } else {
+                withContext(Main){
+                    userFetchErrorSLE.postValue(response.message())
+                }
+                page
             }
-            page
+        } catch(e: Exception) {
+            withContext(Main){
+                userFetchErrorSLE.postValue(e.message)
+            }
+            return page
         }
     }
 

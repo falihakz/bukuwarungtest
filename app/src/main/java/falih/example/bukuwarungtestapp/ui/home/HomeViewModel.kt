@@ -20,7 +20,7 @@ class HomeViewModel(
     val loadingProfileListEvent: LiveData<Boolean> = _loadingProfileListEvent
     private val _userList = profileRepository.userList
     val userList: LiveData<List<Profile>> = _userList
-    private val userFetchErrorSLE = profileRepository.userFetchErrorSLE
+    val userFetchErrorSLE = profileRepository.userFetchErrorSLE
 
     // for data filter and pagination
     private var mPage = 1
