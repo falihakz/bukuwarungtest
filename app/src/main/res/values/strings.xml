@@ -4,4 +4,8 @@
     <string name="title_profile">Profile</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_user_found">No user found</string>
+    <string name="loading_data">Loading data...</string>
+    <string name="loading_more_data">Loading more data...</string>
+    <string name="title_profile_detail">Profile Detail</string>
 </resources>

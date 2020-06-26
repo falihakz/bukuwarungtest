@@ -2,7 +2,9 @@ package falih.example.bukuwarungtestapp.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import falih.example.bukuwarungtestapp.common.SingleLiveEvent
 import falih.example.bukuwarungtestapp.data.repository.ProfileRepository
 import falih.example.bukuwarungtestapp.data.room.entity.Profile
 import kotlinx.coroutines.CoroutineScope
@@ -16,41 +18,47 @@ class HomeViewModel(
     private val profileRepository: ProfileRepository
 ) : ViewModel() {
 
-    private val _loadingProfileListEvent = MutableLiveData<Boolean>()
-    val loadingProfileListEvent: LiveData<Boolean> = _loadingProfileListEvent
-    private val _userList = profileRepository.userList
-    val userList: LiveData<List<Profile>> = _userList
-    val userFetchErrorSLE = profileRepository.userFetchErrorSLE
-
-    // for data filter and pagination
-    private var mPage = 1
-
-    init {
-        refreshUserListFromRemote()
+    private val _loadingProfileListState = MutableLiveData<Boolean>()
+    val loadingProfileListState: LiveData<Boolean> = _loadingProfileListState
+    val userList: LiveData<List<Profile>> = Transformations.map(profileRepository.userList){
+        it
+    }
+    val userFetchErrorEvent = profileRepository.userFetchErrorEvent
+    val showUserDetailEvent = SingleLiveEvent<Profile>()
+    val listEmpty: LiveData<Boolean> = Transformations.map(userList){
+        it.isNullOrEmpty() && mPage > 1
     }
 
-    fun refreshUserListFromRemote(){
-        _loadingProfileListEvent.value = true
+    // for data filter and pagination
+    var mPage = 1
+    private set
+
+    init {
+        fetchUserListFromRemote()
+    }
+
+    fun fetchUserListFromRemote(){
+        _loadingProfileListState.value = true
         println("get ready to call API...")
         CoroutineScope(IO).launch {
             val nextPage = profileRepository.fetchUsersFromAPI(mPage)
             withContext(Main){
                 mPage = nextPage
-                _loadingProfileListEvent.value = false
+                _loadingProfileListState.value = false
             }
         }
     }
     //region databinding methods
     fun openUserDetailAt(position: Int){
-
+        showUserDetailEvent.postValue(userList.value?.get(position))
     }
 
     fun getFirstNameAt(position: Int): String? {
-        return null
+        return userList.value?.get(position)?.first_name
     }
 
     fun getLastNameAt(position: Int): String? {
-        return null
+        return userList.value?.get(position)?.last_name
     }
 
     //endregion

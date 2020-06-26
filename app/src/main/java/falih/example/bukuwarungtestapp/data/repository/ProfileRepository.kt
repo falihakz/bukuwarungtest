@@ -8,7 +8,6 @@ import falih.example.bukuwarungtestapp.data.room.AppDatabase
 import falih.example.bukuwarungtestapp.data.room.dao.ProfileDao
 import falih.example.bukuwarungtestapp.data.room.entity.Profile
 import falih.example.bukuwarungtestapp.model.UserListResponse
-import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -20,7 +19,7 @@ class ProfileRepository(
 ) {
     private val profileDao: ProfileDao
     val userList: LiveData<List<Profile>>
-    val userFetchErrorSLE = SingleLiveEvent<String>()
+    val userFetchErrorEvent = SingleLiveEvent<String>()
 
     init {
         val db = AppDatabase.getInstance(context)
@@ -40,13 +39,13 @@ class ProfileRepository(
                 else page
             } else {
                 withContext(Main){
-                    userFetchErrorSLE.postValue(response.message())
+                    userFetchErrorEvent.postValue(response.message())
                 }
                 page
             }
         } catch(e: Exception) {
             withContext(Main){
-                userFetchErrorSLE.postValue(e.message)
+                userFetchErrorEvent.postValue(e.message)
             }
             return page
         }
