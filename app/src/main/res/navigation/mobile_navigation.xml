@@ -23,6 +23,6 @@
     <fragment
         android:id="@+id/userDetailFragment"
         android:name="falih.example.bukuwarungtestapp.ui.home.userdetail.UserDetailFragment"
-        android:label="fragment_user_detail"
+        android:label="@string/title_profile_detail"
         tools:layout="@layout/fragment_user_detail" />
 </navigation>
