@@ -5,27 +5,44 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import falih.example.bukuwarungtestapp.R
+import falih.example.bukuwarungtestapp.databinding.FragmentProfileBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
 
-    private lateinit var profileViewModel: ProfileViewModel
+    private val viewModel: ProfileViewModel by viewModel()
+    private lateinit var binding: FragmentProfileBinding
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        profileViewModel =
-                ViewModelProviders.of(this).get(ProfileViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_profile, container, false)
-        val textView: TextView = root.findViewById(R.id.text_profile)
-        profileViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
-        return root
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_profile, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initBinding()
+        initView()
+        initObserver()
+    }
+
+    private fun initBinding() {
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
+    }
+
+    private fun initView() {
+
+    }
+
+    private fun initObserver() {
+
     }
 }

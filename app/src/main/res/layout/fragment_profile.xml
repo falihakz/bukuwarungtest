@@ -1,22 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:id="@+id/text_profile"
+    <data>
+        <import type="falih.example.bukuwarungtestapp.R"/>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="falih.example.bukuwarungtestapp.ui.profile.ProfileViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_avatar"
+            android:layout_width="200dp"
+            android:layout_margin="20dp"
+            android:scaleType="centerInside"
+            tools:src="@android:color/black"
+            android:src="@android:color/black"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/et_firstname"
+            app:layout_constraintVertical_chainStyle="packed"
+
+            android:layout_height="200dp"/>
+
+        <ImageView
+            android:src="@android:drawable/ic_menu_camera"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
+            app:layout_constraintEnd_toEndOf="@id/iv_avatar"/>
+
+        <EditText
+            android:id="@+id/et_firstname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="John"
+            android:hint="First name"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            android:textAlignment="center"
+            android:text="@={viewModel.firstName}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_avatar"
+            app:layout_constraintBottom_toTopOf="@id/et_lastname"
+
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"/>
+
+        <EditText
+            android:id="@+id/et_lastname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@={viewModel.lastName}"
+            tools:text="Smith"
+            android:textAlignment="center"
+            android:hint="Last name"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_firstname"
+            app:layout_constraintBottom_toTopOf="@id/et_email"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"/>
+
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@={viewModel.email}"
+            tools:text="john.smith@gmail.com"
+            android:hint="Email"
+            android:inputType="text"
+            android:imeOptions="actionDone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_lastname"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

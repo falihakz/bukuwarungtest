@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import falih.example.bukuwarungtestapp.common.SingleLiveEvent
-import falih.example.bukuwarungtestapp.data.repository.ProfileRepository
+import falih.example.bukuwarungtestapp.data.repository.UserRepository
 import falih.example.bukuwarungtestapp.data.room.entity.Profile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
@@ -15,15 +15,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HomeViewModel(
-    private val profileRepository: ProfileRepository
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _loadingProfileListState = MutableLiveData<Boolean>()
     val loadingProfileListState: LiveData<Boolean> = _loadingProfileListState
-    val userList: LiveData<List<Profile>> = Transformations.map(profileRepository.userList){
+    val userList: LiveData<List<Profile>> = Transformations.map(userRepository.userList){
         it
     }
-    val userFetchErrorEvent = profileRepository.userFetchErrorEvent
+    val userFetchErrorEvent = userRepository.userFetchErrorEvent
     val showUserDetailEvent = SingleLiveEvent<Profile>()
     val listEmpty: LiveData<Boolean> = Transformations.map(userList){
         it.isNullOrEmpty() && mPage > 1
@@ -41,7 +41,7 @@ class HomeViewModel(
         _loadingProfileListState.value = true
         println("get ready to call API...")
         CoroutineScope(IO).launch {
-            val nextPage = profileRepository.fetchUsersFromAPI(mPage)
+            val nextPage = userRepository.fetchUsersFromAPI(mPage)
             withContext(Main){
                 mPage = nextPage
                 _loadingProfileListState.value = false

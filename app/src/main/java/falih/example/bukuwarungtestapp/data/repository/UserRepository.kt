@@ -13,17 +13,15 @@ import kotlinx.coroutines.withContext
 import retrofit2.Response
 import java.lang.Exception
 
-class ProfileRepository(
-    context: Context,
+class UserRepository(
+    appDatabase: AppDatabase,
     private val apiServices: APIServices
 ) {
-    private val profileDao: ProfileDao
+    private val profileDao = appDatabase.profileDao()
     val userList: LiveData<List<Profile>>
     val userFetchErrorEvent = SingleLiveEvent<String>()
 
     init {
-        val db = AppDatabase.getInstance(context)
-        profileDao = db!!.profileDao()
         userList = profileDao.getAll()
     }
 

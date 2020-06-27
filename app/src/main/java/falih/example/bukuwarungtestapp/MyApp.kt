@@ -2,6 +2,7 @@ package falih.example.bukuwarungtestapp
 
 import androidx.multidex.MultiDexApplication
 import falih.example.bukuwarungtestapp.module.apiModules
+import falih.example.bukuwarungtestapp.module.databaseModules
 import falih.example.bukuwarungtestapp.module.repositories
 import falih.example.bukuwarungtestapp.module.viewModels
 import org.koin.android.ext.koin.androidContext
@@ -37,6 +38,7 @@ class MyApp : MultiDexApplication() {
             androidContext(this@MyApp)
             modules(listOf(
                 apiModules,
+                databaseModules,
                 repositories,
                 viewModels
             ))
