@@ -1,6 +1,7 @@
 package falih.example.bukuwarungtestapp.ui.profile
 
 import android.os.Handler
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -23,11 +24,14 @@ class ProfileViewModel(
     val firstName = MutableLiveData<String>()
     val lastName = MutableLiveData<String>()
     val email = MutableLiveData<String>()
+    private val _avatarPath = MutableLiveData<String>()
+    val avatarPath: LiveData<String> = _avatarPath
 
     init {
         firstName.value = sessionRepository.getFirstName()
         lastName.value = sessionRepository.getLastName()
         email.value = sessionRepository.getEmail()
+        _avatarPath.value = sessionRepository.getAvatar()
         firstName.observeForever(firstNameObserver)
         lastName.observeForever(lastNameObserver)
         email.observeForever(emailObserver)
@@ -42,5 +46,9 @@ class ProfileViewModel(
         firstName.removeObserver(firstNameObserver)
         lastName.removeObserver(lastNameObserver)
         email.removeObserver(emailObserver)
+    }
+
+    fun setAvatarImagePath(tmpPhotoFilePath: String) {
+        sessionRepository.setAvatar(tmpPhotoFilePath)
     }
 }

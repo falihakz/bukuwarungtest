@@ -10,6 +10,7 @@ class SessionRepository(
         const val KEY_FIRST_NAME = "first_name"
         const val KEY_LAST_NAME = "last_name"
         const val KEY_EMAIL = "email"
+        const val KEY_AVATAR_PATH = "avatar_path"
     }
 
     fun getFirstName(): String {
@@ -21,9 +22,7 @@ class SessionRepository(
 
     fun getEmail() = sharedPreferences.getString(KEY_EMAIL, "") ?: ""
 
-    fun getAvatar(){
-
-    }
+    fun getAvatar() = sharedPreferences.getString(KEY_AVATAR_PATH, "") ?: ""
 
     fun setFirstName(firstName: String){
         sharedPreferences.edit().putString(KEY_FIRST_NAME, firstName).apply()
@@ -33,5 +32,8 @@ class SessionRepository(
     }
     fun setEmail(email: String){
         sharedPreferences.edit().putString(KEY_EMAIL, email).apply()
+    }
+    fun setAvatar(path: String){
+        sharedPreferences.edit().putString(KEY_AVATAR_PATH, path).apply()
     }
 }

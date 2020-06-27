@@ -86,4 +86,7 @@ dependencies {
     implementation "org.koin:koin-androidx-scope:2.0.1"
     implementation "org.koin:koin-androidx-viewmodel:2.0.1"
     implementation "org.koin:koin-androidx-ext:2.0.1"
+
+    implementation 'com.karumi:dexter:4.2.0'
+    implementation 'id.zelory:compressor:2.1.0'
 }
